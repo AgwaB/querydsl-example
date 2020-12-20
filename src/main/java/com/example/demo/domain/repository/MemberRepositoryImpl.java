@@ -1,9 +1,9 @@
-package com.example.demo.repository;
+package com.example.demo.domain.repository;
 
-import com.example.demo.Member;
-import com.example.demo.MemberCondition;
-import com.example.demo.MemberDto;
+import com.example.demo.application.MemberDto;
 import com.example.demo.QMemberDto;
+import com.example.demo.domain.Member;
+import com.example.demo.domain.MemberCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,11 +13,9 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 import java.util.stream.Stream;
 
 import static com.example.demo.QMember.member;
@@ -31,8 +29,27 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
+    /*
+    1. 'Projections.bean' with Setter
+    .select(Projections.bean(MemberDto.class,
+                  member.username,
+                  member.age))
+
+     2. 'Projections.fields'
+     .select(Projections.fields(MemberDto.class,
+                  member.username,
+                  member.age))
+
+     3. `Projections.constructor` with constructor
+     .select(Projections.constructor(MemberDto.class,
+                  member.username,
+                  member.age))
+
+     4. @QueryProjection with Q Entity for type checking
+     .select(new QMemberDto(member.username, member.age))
+     */
     @Override
-    public Page<MemberDto> someComplexQueryWithPagination(Pageable pageable) {
+    public Page<MemberDto> findAllWithPaginationByComplexQuery(Pageable pageable) {
         List<MemberDto> memberDtos = this.queryFactory
                 .select(new QMemberDto(member.name, member.age))
                 .from(member)
@@ -51,13 +68,13 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     /*
     JPQL
     @Query (
-            value = "SELECT new com.example.demo.MemberDto(m.name, m.age) " +
+            value = "SELECT new com.example.demo.application.MemberDto(m.name, m.age) " +
                     "FROM member m " +
                     "INNER JOIN team t ON (member.team.id = team.id)"
     )
      */
     @Override
-    public Stream<MemberDto> someComplexQueryWithStream() {
+    public Stream<MemberDto> findWithStreamByComplexQueryWithStream() {
         return this.queryFactory
                 .select(new QMemberDto(member.name, member.age))
                 .from(member)
@@ -84,7 +101,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public List<Member> someConditionalQuery(MemberCondition condition) {
+    public List<Member> findAllByConditionalQuery(MemberCondition condition) {
         return this.queryFactory
                 .selectFrom(member)
                 .where(this.memberPredicates(condition))

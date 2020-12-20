@@ -1,7 +1,6 @@
-package com.example.demo;
+package com.example.demo.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,13 +10,12 @@ import java.util.TimeZone;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class MemberCondition {
     private Long id;
     private String name;
     private Integer age;
-    private String updatedAtGte;
-    private String updatedAtLt;
+    private LocalDateTime updatedAtGte;
+    private LocalDateTime updatedAtLt;
 
     public static MemberCondition name(String name) {
         return new MemberCondition(null, name, null, null, null);
@@ -31,15 +29,22 @@ public class MemberCondition {
         return new MemberCondition(null, null, null, updatedAtGte, updatedAtLt);
     }
 
-    public LocalDateTime getUpdatedAtGte() {
-        return this.updatedAtGte != null
-                ? this.toLocalDateTime(this.updatedAtGte)
+    public MemberCondition(
+            Long id,
+            String name,
+            Integer age,
+            String updatedAtGte,
+            String updatedAtLt
+    ) {
+        // validation
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.updatedAtGte = updatedAtGte != null
+                ? this.toLocalDateTime(updatedAtGte)
                 : null;
-    }
-
-    public LocalDateTime getUpdatedAtLt() {
-        return this.updatedAtLt != null
-                ? this.toLocalDateTime(this.updatedAtLt)
+        this.updatedAtLt = updatedAtLt != null
+                ? this.toLocalDateTime(updatedAtLt)
                 : null;
     }
 

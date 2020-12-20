@@ -1,8 +1,11 @@
 package com.example.demo;
 
-import com.example.demo.repository.MemberRepository;
-import com.example.demo.repository.TeamRepository;
-import org.assertj.core.api.Assertions;
+import com.example.demo.application.MemberDto;
+import com.example.demo.domain.Member;
+import com.example.demo.domain.MemberCondition;
+import com.example.demo.domain.Team;
+import com.example.demo.domain.repository.MemberRepository;
+import com.example.demo.domain.repository.TeamRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,14 +61,14 @@ class QueryDslTest {
                         Sort.Order.asc("age")
                 )
         );
-        Page<MemberDto> page = this.memberRepository.someComplexQueryWithPagination(pageRequest);
+        Page<MemberDto> page = this.memberRepository.findAllWithPaginationByComplexQuery(pageRequest);
 
         assertThat(page.getTotalElements()).isEqualTo(8);
     }
 
     @Test
     void stream() {
-        try(Stream<MemberDto> stream = this.memberRepository.someComplexQueryWithStream()) {
+        try(Stream<MemberDto> stream = this.memberRepository.findWithStreamByComplexQueryWithStream()) {
             List<MemberDto> memberDtos = stream.collect(Collectors.toList());
             assertThat(memberDtos.size()).isEqualTo(8);
         }
@@ -78,11 +81,11 @@ class QueryDslTest {
 
     @Test
     void condition() {
-        List<Member> age_22 = this.memberRepository.someConditionalQuery(MemberCondition.age(22));
+        List<Member> age_22 = this.memberRepository.findAllByConditionalQuery(MemberCondition.age(22));
         assertThat(age_22.size()).isEqualTo(2);
         age_22.forEach(member -> assertThat(member.getAge()).isEqualTo(22));
 
-        List<Member> name_member1 = this.memberRepository.someConditionalQuery(MemberCondition.name("member1"));
+        List<Member> name_member1 = this.memberRepository.findAllByConditionalQuery(MemberCondition.name("member1"));
         assertThat(name_member1.size()).isEqualTo(1);
         assertThat(name_member1.get(0).getName()).isEqualTo("member1");
     }
