@@ -1,8 +1,8 @@
 package com.example.demo.domain.repository;
 
+import com.example.demo.application.MemberDto;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.MemberCondition;
-import com.example.demo.application.MemberDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

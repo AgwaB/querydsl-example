@@ -1,4 +1,4 @@
 package com.example.demo.domain.repository;
 
-public class TeamRepositoryImpl implements TeamRepositoryCustom{
+public class TeamRepositoryImpl implements TeamRepositoryCustom {
 }

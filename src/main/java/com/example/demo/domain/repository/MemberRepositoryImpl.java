@@ -1,9 +1,10 @@
 package com.example.demo.domain.repository;
 
 import com.example.demo.application.MemberDto;
-import com.example.demo.QMemberDto;
+import com.example.demo.application.QMemberDto;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.MemberCondition;
+import com.example.demo.domain.QMember;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,10 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.example.demo.QMember.member;
-import static com.example.demo.QTeam.team;
+import static com.example.demo.domain.QMember.member;
+import static com.example.demo.domain.QTeam.team;
 
-@Repository
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 

@@ -17,18 +17,6 @@ public class MemberCondition {
     private LocalDateTime updatedAtGte;
     private LocalDateTime updatedAtLt;
 
-    public static MemberCondition name(String name) {
-        return new MemberCondition(null, name, null, null, null);
-    }
-
-    public static MemberCondition age(Integer age) {
-        return new MemberCondition(null, null, age, null, null);
-    }
-
-    public static MemberCondition updatedAtBetween(String updatedAtGte, String updatedAtLt) {
-        return new MemberCondition(null, null, null, updatedAtGte, updatedAtLt);
-    }
-
     public MemberCondition(
             Long id,
             String name,
@@ -46,6 +34,18 @@ public class MemberCondition {
         this.updatedAtLt = updatedAtLt != null
                 ? this.toLocalDateTime(updatedAtLt)
                 : null;
+    }
+
+    public static MemberCondition name(String name) {
+        return new MemberCondition(null, name, null, null, null);
+    }
+
+    public static MemberCondition age(Integer age) {
+        return new MemberCondition(null, null, age, null, null);
+    }
+
+    public static MemberCondition updatedAtBetween(String updatedAtGte, String updatedAtLt) {
+        return new MemberCondition(null, null, null, updatedAtGte, updatedAtLt);
     }
 
     private LocalDateTime toLocalDateTime(String time) {

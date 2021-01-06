@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "members")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name"})
@@ -51,13 +53,13 @@ public class Member {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public static Member of(String name, Integer age, Team team) {
-        return new Member(name, age, team);
-    }
-
     private Member(String name, Integer age, Team team) {
         this.name = name;
         this.age = age;
         this.team = team;
+    }
+
+    public static Member of(String name, Integer age, Team team) {
+        return new Member(name, age, team);
     }
 }
